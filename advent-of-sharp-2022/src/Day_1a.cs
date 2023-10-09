@@ -4,7 +4,7 @@ using System.IO;
 class Question_1_Solution {
     static void Main() {
         // Read all lines from the input.txt file into an array
-        string[] lines = File.ReadAllLines("input.txt");
+        string[] lines = File.ReadAllLines("inputs/Day_1.txt");
 
         int maxCalories = 0; // To store the maximum calories
         int maxCaloriesElf = 0; // To store the elf number with maximum calories
