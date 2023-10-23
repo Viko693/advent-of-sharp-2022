@@ -1,42 +1,61 @@
-// using System;
-// using System.IO;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-// class Question_1_Solution
-// {
-//     static void Main()
-//     {
-//         // Read all lines from the input.txt file into an array
-//         string[] lines = File.ReadAllLines("inputs/Day_1.txt");
+class Question_1b_Solution
+{
+    private class Elf
+    {
+        public int Number { get; set; }
+        public int Calories { get; set; }
+    }
+    static void Main_disabled()
+    {
+        // Prepare the input
+        var lines = File.ReadAllLines("inputs/Day_1.txt");
 
-//         int maxCalories = 0; // To store the maximum calories
-//         int maxCaloriesElf = 0; // To store the elf number with maximum calories
-//         int currentElfCalories = 0; // To store the current elf's total calories
-//         int elfCounter = 1; // To keep track of the elf number
+        // Initialize variables
+        var elves = new List<Elf>();
+        var currentElfCalories = 0;
+        var elfCounter = 1;
 
-//         // Loop through each line in the input
-//         for (int i = 0; i < lines.Length; i++)
-//         {
-//             // Check if the line is empty (new elf's data starts)
-//             if (string.IsNullOrEmpty(lines[i]))
-//             {
-//                 // Check if the current elf has more calories than the max so far
-//                 if (currentElfCalories > maxCalories)
-//                 {
-//                     maxCalories = currentElfCalories;
-//                     maxCaloriesElf = elfCounter;
-//                 }
-//                 // Reset for the next elf
-//                 currentElfCalories = 0;
-//                 elfCounter++;
-//                 continue;
-//             }
+        // Process each line in the input
+        foreach (var line in lines)
+        {
+            ProcessLine(line, ref currentElfCalories, ref elfCounter, elves);
+        }
 
-//             // Parse the calories from the line and add to the current elf's total
-//             int calories = int.Parse(lines[i]);
-//             currentElfCalories += calories;
-//         }
+        // Add the last elf
+        elves.Add(new Elf { Number = elfCounter, Calories = currentElfCalories });
 
-//         // Output the elf with the maximum calories
-//         Console.WriteLine("Elf " + maxCaloriesElf + " has the most calories: " + maxCalories);
-//     }
-// }
+        // Sort the elves by calories and take the top 3
+        var topElves = elves.OrderByDescending(e => e.Calories).Take(3).ToList();
+
+        // Calculate the total calories of the top 3 elves
+        var totalCalories = topElves.Sum(e => e.Calories);
+
+        // Output the results
+        Console.WriteLine($"Total calories of top 3 elves: {totalCalories}");
+
+        // Extra output for clarity
+        foreach (var elf in topElves)
+        {
+            Console.WriteLine($"Elf {elf.Number} has {elf.Calories} calories.");
+        }
+    }
+
+    static void ProcessLine(string line, ref int currentElfCalories, ref int elfCounter, List<Elf> elves)
+    {
+        if (string.IsNullOrEmpty(line))
+        {
+            elves.Add(new Elf { Number = elfCounter, Calories = currentElfCalories });
+            currentElfCalories = 0;
+            elfCounter++;
+        }
+        else
+        {
+            currentElfCalories += int.Parse(line);
+        }
+    }
+}

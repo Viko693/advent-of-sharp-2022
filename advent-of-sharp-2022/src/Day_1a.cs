@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 
-class Program
+class Question_1a_Solution
 {
-    static void Main()
+    static void Main_disabled()
     {
         // Read all lines from the input.txt file into an array
         string[] lines = File.ReadAllLines("inputs/Day_1.txt");
