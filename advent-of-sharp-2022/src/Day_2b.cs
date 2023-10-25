@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using System.Xml;
 
-class  Question_2a_Solution
+class  Question_2b_Solution
 {
-    static void Main_disabled()
+    static void Main()
     {   // Prepare the text file
         var lines = File.ReadAllLines("inputs/Day_2.txt");
         // prepare the total score variable 
@@ -29,9 +29,9 @@ class  Question_2a_Solution
     {
         switch (move)
         {
-            case 'X': return 1; //rock
-            case 'Y': return 2; //paper
-            case 'Z': return 3; //scissors
+            case 'Q': return 1; //rock
+            case 'W': return 2; //paper
+            case 'E': return 3; //scissors
             default: return 0;
         }
     }
@@ -41,14 +41,14 @@ class  Question_2a_Solution
         int score = 0;
         switch ((opponentMove, yourMove))
         {
-            case ('A', 'Y'): // Rock vs Paper
-            case ('B', 'Z'): // Paper vs Scissors
-            case ('C', 'X'): // Scissors vs Rock
+            case ('A', 'W'): // Rock vs Paper
+            case ('B', 'E'): // Paper vs Scissors
+            case ('C', 'Q'): // Scissors vs Rock
                 score = 6; 
                 break;
-            case ('A', 'X'): // Rock vs Rock
-            case ('B', 'Y'): // Paper vs Paper
-            case ('C', 'Z'): // Scissors vs Scissors
+            case ('A', 'Q'): // Rock vs Rock
+            case ('B', 'W'): // Paper vs Paper
+            case ('C', 'E'): // Scissors vs Scissors
                 score = 3; 
                 break;
             default: 
