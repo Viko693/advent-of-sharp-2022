@@ -1,67 +1,88 @@
 using System;
 using System.IO;
-using System.Xml;
 
-class  Question_2b_Solution
+class Program
 {
-    static void Main()
-    {   // Prepare the text file
+    static void Main_disabled()
+    {
+        // Read lines from the input file
         var lines = File.ReadAllLines("inputs/Day_2.txt");
-        // prepare the total score variable 
         int totalScore = 0;
-        // loop through the input file lines 
+
+        // Loop through each line 
         foreach (string line in lines)
         {
-            // Extract the opponent's move (first character) and your move (third character)
             char opponentMove = line[0];
-            char yourMove = line[2];
+            char desiredOutcome = line[2];
 
-            int moveScore = GetMoveScore(yourMove);
-            int outcomeScore = GetOutcomeScore(opponentMove, yourMove);
+            // Determine the move  
+            char yourActualMove = DetermineMove(opponentMove, desiredOutcome);
 
+            // Get the score  
+            int moveScore = GetMoveScore(yourActualMove);
+
+            // Get the outcome  
+            int outcomeScore = GetOutcomeScore(opponentMove, yourActualMove);
+
+            // Update the total score
             totalScore += moveScore + outcomeScore;
         }
-        //output the total score
+
+        // Output the total score
         Console.WriteLine("Total Score: " + totalScore);
     }
-    //Function to get the score for your move
-    static int GetMoveScore(char move)
+
+    // Get the score for your move
+    static int GetMoveScore(char yourActualMove)
     {
-        switch (move)
+        switch (yourActualMove)
         {
-            case 'Q': return 1; //rock
-            case 'W': return 2; //paper
-            case 'E': return 3; //scissors
+            case 'R': return 1; //Rock
+            case 'P': return 2; //Paper
+            case 'S': return 3; //Scissors
             default: return 0;
         }
     }
-    //get the outcome score based on both moves
-    static int GetOutcomeScore(char opponentMove, char yourMove)
+
+    // Determine the move based on the test input
+    static char DetermineMove(char opponentMove, char desiredOutcome)
     {
-        int score = 0;
-        switch ((opponentMove, yourMove))
+        switch ((opponentMove, desiredOutcome))
         {
-            case ('A', 'W'): // Rock vs Paper
-            case ('B', 'E'): // Paper vs Scissors
-            case ('C', 'Q'): // Scissors vs Rock
-                score = 6; 
-                break;
-            case ('A', 'Q'): // Rock vs Rock
-            case ('B', 'W'): // Paper vs Paper
-            case ('C', 'E'): // Scissors vs Scissors
-                score = 3; 
-                break;
-            default: 
-                score = 0;
-                break;
+            case ('A', 'X'): return 'S';
+            case ('A', 'Y'): return 'R';
+            case ('A', 'Z'): return 'P';
+            case ('B', 'X'): return 'R';
+            case ('B', 'Y'): return 'P';
+            case ('B', 'Z'): return 'S';
+            case ('C', 'X'): return 'P';
+            case ('C', 'Y'): return 'S';
+            case ('C', 'Z'): return 'R';
+            default: return 'R';
         }
-        return score;
     }
 
+    // Determine the outcome 
+    static int DetermineOutcome(char opponentMove, char yourActualMove)
+    {
+        switch ((opponentMove, yourActualMove))
+        {
+            case ('A', 'P'):
+            case ('B', 'S'):
+            case ('C', 'R'):
+                return 6; //case of win
+            case ('A', 'R'):
+            case ('B', 'P'):
+            case ('C', 'S'):
+                return 3; // case of draw
+            default:
+                return 0; // case of loss
+        }
+    }
 
-
-
-
-
-
+    // Get the outcome ( Separated from Determine Outcome in case of needed future extensions or adjustments)
+    static int GetOutcomeScore(char opponentMove, char yourActualMove)
+    {
+        return DetermineOutcome(opponentMove, yourActualMove);
+    }
 }

@@ -12,7 +12,7 @@ class  Question_2a_Solution
         // loop through the input file lines 
         foreach (string line in lines)
         {
-            // Extract the opponent's move (first character) and your move (third character)
+            // Extract the opponent's move 
             char opponentMove = line[0];
             char yourMove = line[2];
 
@@ -24,7 +24,7 @@ class  Question_2a_Solution
         //output the total score
         Console.WriteLine("Total Score: " + totalScore);
     }
-    //Function to get the score for your move
+    // get the score for your move
     static int GetMoveScore(char move)
     {
         switch (move)
@@ -35,7 +35,7 @@ class  Question_2a_Solution
             default: return 0;
         }
     }
-    //get the outcome score based on both moves
+    //get the outcome score  
     static int GetOutcomeScore(char opponentMove, char yourMove)
     {
         int score = 0;
