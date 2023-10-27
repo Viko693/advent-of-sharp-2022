@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-class Question_1b_Solution
+class Day_1b
 {
     private class Elf
     {

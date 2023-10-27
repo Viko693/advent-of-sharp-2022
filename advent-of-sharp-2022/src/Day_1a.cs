@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-class Question_1a_Solution
+class Day_1a
 {
     static void Main_disabled()
     {

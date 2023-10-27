@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-class Program
+class Day_2b
 {
     static void Main_disabled()
     {
@@ -86,3 +86,5 @@ class Program
         return DetermineOutcome(opponentMove, yourActualMove);
     }
 }
+
+

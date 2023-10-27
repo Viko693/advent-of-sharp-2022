@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 
-class  Question_2a_Solution
+class  Day_2a
 {
     static void Main_disabled()
     {   // Prepare the text file
@@ -65,3 +65,4 @@ class  Question_2a_Solution
 
 
 }
+// Possible improvement - create a function that holds the Rock x Paper x Scissors logic, saving computing power 
