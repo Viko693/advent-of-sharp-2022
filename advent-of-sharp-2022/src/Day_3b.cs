@@ -3,7 +3,7 @@ using System.IO;
 // read from three lines at a time instead of separating 1 line in half and disecting it
 class Day_3b
 {
-    static void Main()
+    static void Main_disabled()
     {
         var lines = File.ReadAllLines("inputs/Day_3.txt");
         int totalPriority = 0;

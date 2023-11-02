@@ -1,5 +1,7 @@
-// TODO LIST
+using System;
+using System.IO;
 
+// TO DO
 // Read each line from the input file, 
 // Split each line  
 // Find the character that appears in both compartments.
@@ -7,8 +9,6 @@
 // Sum up 
 // Half string error check
 
-using System;
-using System.IO;
 
 class Day_3a
 {
