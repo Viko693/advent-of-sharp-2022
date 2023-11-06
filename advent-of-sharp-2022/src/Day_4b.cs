@@ -9,7 +9,7 @@ using System.IO;
 
 class Day_4b
 {
-    static void Main()
+    static void Main_disabled()
     {
         var lines = File.ReadAllLines("inputs/Day_4.txt");
         int totalOverlapNumber = 0;
