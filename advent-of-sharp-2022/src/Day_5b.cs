@@ -1,23 +1,13 @@
 // TO DO
-// Map the initial state, stop looping after an empty line 
-// Reverse that state to circumvent logic lapse during parsing
-// Simulate the moving and update the grid
-// Output requested top box of each stack 
-
-// Notes
-// stacking is good here, but also vectors would work -
-// -in case asked to move items from inside the crates instead of the top
-// "StreamReader"  can stop when a condition is met and is lighter on the memory.
-// Creating a stack preemptively seems to be the way to go, because in C# -
-// - you cannot add an item to a non existing stack and create one with that action. \
+//Change the logic in the simulate move function
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 
-class Day5_a
+class Day5_b
 {
-    static void Main_disabled()
+    static void Main()
     {
         string filePath = "inputs/Day_5.txt";
 
