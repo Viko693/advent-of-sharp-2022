@@ -7,7 +7,7 @@ using System.Linq;
 
 class Day5_b
 {
-    static void Main()
+    static void Main_disabled()
     {
         string filePath = "inputs/Day_5.txt";
 
@@ -119,24 +119,37 @@ class Day5_b
     }
 
     // Simulates a move instruction on the stacks
+
+// This time we are going to add a temporary stack that we will put the items in and always reverse the order
+// - This way if 1 item is placed nothing happens, but if more are placed they will be reversed accordingly
     static void SimulateMove(string instruction, List<Stack<char>> stacks)
     {
         string[] parts = instruction.Split(' ');
-        int numCrates = int.Parse(parts[1]); // Number of crates to move
-        int fromStack = int.Parse(parts[3]) - 1; // Source stack index (0-based)
-        int toStack = int.Parse(parts[5]) - 1; // Destination stack index (0-based)
+        int numCrates = int.Parse(parts[1]);
+        int fromStack = int.Parse(parts[3]) - 1;
+        int toStack = int.Parse(parts[5]) - 1;
 
-        // Check if the stack indices are within bounds
         if (fromStack < stacks.Count && toStack < stacks.Count)
         {
-            // Move the specified number of crates from the source to the destination stack
+            List<char> cratesToMove = new List<char>();
+
+            // Extract crates from the source stack
             for (int i = 0; i < numCrates && stacks[fromStack].Count > 0; i++)
             {
-                char crate = stacks[fromStack].Pop();
+                cratesToMove.Add(stacks[fromStack].Pop());
+            }
+
+            // Reverse the order of the extracted crates
+            cratesToMove.Reverse();
+
+            // Move the crates to the destination stack
+            foreach (char crate in cratesToMove)
+            {
                 stacks[toStack].Push(crate);
             }
         }
     }
+
 
     // Prints the current state of each stack
     static void PrintStacks(List<Stack<char>> stacks)
