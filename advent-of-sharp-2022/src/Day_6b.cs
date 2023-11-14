@@ -2,11 +2,12 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-
-class Day_6a
+// Looks like spending more time doing Day_6a paid off, 
+//I only had to change the length to 13 from 3 in the FindMaker function
+class Day_6b
 {
 
-    static void Main_disabled()
+    static void Main()
     {
         var dataStreams = File.ReadAllLines("inputs/Day_6.txt");
         foreach (var dataStream in dataStreams)
@@ -19,9 +20,9 @@ class Day_6a
 // Loo
     static int FindMarker(string dataStream)
     {
-        for (int i = 3; i < dataStream.Length; i++)
+        for (int i = 13; i < dataStream.Length; i++)
         {
-            if (CharDiffCheck(dataStream, i - 3, i))
+            if (CharDiffCheck(dataStream, i - 13, i))
             {
                 return i + 1; // +1 because positions start at 1, not 0
             }
