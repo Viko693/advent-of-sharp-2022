@@ -6,7 +6,7 @@ class  Day_2a
 {
     static void Main_disabled()
     {   // Prepare the text file
-        var lines = File.ReadAllLines("inputs/Day_2.txt");
+        var lines = System.IO.File.ReadAllLines("inputs/Day_2.txt");
         // prepare the total score variable 
         int totalScore = 0;
         // loop through the input file lines 

@@ -13,7 +13,7 @@ class Day_1b
     static void Main_disabled()
     {
         // Prepare the input
-        var lines = File.ReadAllLines("inputs/Day_1.txt");
+        var lines = System.IO.File.ReadAllLines("inputs/Day_1.txt");
 
         // Initialize variables
         var elves = new List<Elf>();

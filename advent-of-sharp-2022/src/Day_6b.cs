@@ -7,9 +7,9 @@ using System.Linq;
 class Day_6b
 {
 
-    static void Main()
+    static void Main_disabled()
     {
-        var dataStreams = File.ReadAllLines("inputs/Day_6.txt");
+        var dataStreams = System.IO.File.ReadAllLines("inputs/Day_6.txt");
         foreach (var dataStream in dataStreams)
         {
             var position = FindMarker(dataStream);
@@ -17,7 +17,7 @@ class Day_6b
         }
     }
 
-// Loo
+
     static int FindMarker(string dataStream)
     {
         for (int i = 13; i < dataStream.Length; i++)
@@ -30,7 +30,7 @@ class Day_6b
         return -1; // Return -1 if no marker is found
     }
 
-// Checking if the characters are the same in a loop in case more or less items in 1 sequence are needed to be checked
+    // Checking if the characters are the same in a loop in case more or less items in 1 sequence are needed to be checked
     static bool CharDiffCheck(string dataStream, int start, int end)
     {
         for (int i = start; i <= end; i++)

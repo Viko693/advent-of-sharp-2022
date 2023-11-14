@@ -6,7 +6,7 @@ class Day_1a
     static void Main_disabled()
     {
         // Read all lines from the input.txt file into an array
-        string[] lines = File.ReadAllLines("inputs/Day_1.txt");
+        string[] lines = System.IO.File.ReadAllLines("inputs/Day_1.txt");
 
         int maxCalories = 0; // store the maximum calories
         int maxCaloriesElf = 0; //  store the elf number with maximum calories

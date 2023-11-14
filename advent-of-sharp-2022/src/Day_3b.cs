@@ -5,7 +5,7 @@ class Day_3b
 {
     static void Main_disabled()
     {
-        var lines = File.ReadAllLines("inputs/Day_3.txt");
+        var lines = System.IO.File.ReadAllLines("inputs/Day_3.txt");
         int totalPriority = 0;
 
         for (int i = 0; i < lines.Length; i += 3)

@@ -10,7 +10,7 @@ class Day_4a
 {
     static void Main_disabled()
     {
-        var lines = File.ReadAllLines("inputs/Day_4.txt");
+        var lines = System.IO.File.ReadAllLines("inputs/Day_4.txt");
         int totalOverlapNumber = 0;
 
         foreach (string line in lines)

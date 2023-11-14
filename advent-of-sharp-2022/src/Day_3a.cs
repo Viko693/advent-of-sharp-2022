@@ -15,7 +15,7 @@ class Day_3a
     static void Main_disabled()
     {
         // Read lines 
-        var lines = File.ReadAllLines("inputs/Day_3.txt");
+        var lines = System.IO.File.ReadAllLines("inputs/Day_3.txt");
         int totalPriority = 0;
 
         // Loop through each line
