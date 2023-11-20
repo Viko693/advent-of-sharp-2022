@@ -105,8 +105,15 @@ class Day_7a
                 }
                 else
                 {
-                    var subDirectory = currentDirectory.SubDirectories
-                        .FirstOrDefault(d => d.Name == path);
+                    Directory subDirectory = null; // Start with no subdirectory found
+                    foreach (var dir in currentDirectory.SubDirectories)
+                    {
+                        if (dir.Name == path)
+                        {
+                            subDirectory = dir; // Subdirectory found
+                            break; // Exit the loop once the directory is found
+                        }
+                    }
                     if (subDirectory != null)
                     {
                         currentDirectory = subDirectory; // Change to the specified subdirectory
