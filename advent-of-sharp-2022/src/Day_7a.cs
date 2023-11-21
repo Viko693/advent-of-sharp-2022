@@ -75,14 +75,19 @@ class Day_7a
         }
     }
 
+
     static void Main()
     {
-        // Read all lines from the input file.
         var lines = System.IO.File.ReadAllLines("inputs/Day_7.txt");
-        // Parse the filesystem from the input lines.
-        Directory root = ParseFileSystem(lines);
+        Directory root = ParseFileSystem(lines); // No need to redeclare root, use the static field directly.
 
+        int sumOfSizes = CalculateDirectorySizes(root); // Calculate sizes using the root directory.
+
+        Console.WriteLine($"The sum of total sizes for directories with size <= 100,000 is: {sumOfSizes}");
     }
+
+
+
 
     // Parses the entire filesystem from the given lines of input.
     static Directory ParseFileSystem(string[] lines)
@@ -132,7 +137,7 @@ class Day_7a
         if (path == "/")
         {
             currentDirectory = root; // Set the current directory to root.
-            Console.WriteLine("Changed to root directory."); 
+            Console.WriteLine("Changed to root directory.");
         }
         // If the path is "..", we're moving up to the parent directory.
         else if (path == "..")
@@ -154,7 +159,7 @@ class Day_7a
             if (subDirectory != null)
             {
                 currentDirectory = subDirectory; // Change the current directory to the found subdirectory.
-                Console.WriteLine($"Changed to directory: {currentDirectory.Name}"); 
+                Console.WriteLine($"Changed to directory: {currentDirectory.Name}");
             }
             else
             {
@@ -203,5 +208,29 @@ class Day_7a
             }
         }
     }
+
+    // Method to traverse the tree and calculate sizes
+    static int CalculateDirectorySizes(Directory directory)
+    {
+        int sumOfSizes = 0;
+
+        // Include the size of the current directory if it meets the condition
+        int dirSize = directory.CalculateTotalSize();
+        if (dirSize <= 100000)
+        {
+            sumOfSizes += dirSize;
+        }
+
+        // Recursively calculate sizes for subdirectories
+        foreach (var subDir in directory.SubDirectories)
+        {
+            sumOfSizes += CalculateDirectorySizes(subDir);
+        }
+
+        return sumOfSizes;
+    }
+
+  
 }
+
 
