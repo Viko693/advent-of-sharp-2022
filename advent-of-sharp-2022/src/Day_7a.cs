@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
 
 //TO DO 
 // Directory class - name, list of files with their size and name and list with subdirectories 
@@ -24,6 +19,12 @@ using System.Diagnostics;
 // Creating a boolean isListingContents is useful -
 //- otherwise you would have to manually put a lot of extra clauses to change core functionalities in the loop
 
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Diagnostics;
+
 
 class Day_7a
 {
@@ -34,18 +35,24 @@ class Day_7a
         public List<File> Files { get; set; }
         public List<Directory> SubDirectories { get; set; }
         public Directory Parent { get; set; }
+
         public Directory(string name)
         {
             Name = name;
             Files = new List<File>();
             SubDirectories = new List<Directory>();
-
         }
 
-        // Method to calculate total size
+        // Calculates the total size of files in this directory and all subdirectories.
         public int CalculateTotalSize()
         {
-            int totalSize = Files.Sum(file => file.Size);
+            // Start with the total size of files directly in this directory.
+            int totalSize = 0;
+            foreach (var file in Files)
+            {
+                totalSize += file.Size;
+            }
+            // Add the size of files in all subdirectories, recursively.
             foreach (var subDir in SubDirectories)
             {
                 totalSize += subDir.CalculateTotalSize();
@@ -53,6 +60,8 @@ class Day_7a
             return totalSize;
         }
     }
+
+    private static Directory root = new Directory("/");
 
     class File
     {
@@ -65,100 +74,134 @@ class Day_7a
             Size = size;
         }
     }
+
     static void Main()
     {
+        // Read all lines from the input file.
         var lines = System.IO.File.ReadAllLines("inputs/Day_7.txt");
+        // Parse the filesystem from the input lines.
         Directory root = ParseFileSystem(lines);
 
-        // Use the root for further operations like calculating sizes
     }
 
+    // Parses the entire filesystem from the given lines of input.
     static Directory ParseFileSystem(string[] lines)
     {
-        Directory root = new Directory("/");
+        // Create the root directory.
         Directory currentDirectory = root;
+        // Flag to track when we're listing directory contents.
         bool isListingContents = false;
 
+        // Process each line to build the filesystem.
         foreach (var line in lines)
         {
-            string trimmedLine = line.TrimStart(new char[] { '$', ' ' });
-
-            // If it's a 'cd' command, process it
-            if (trimmedLine.StartsWith("cd "))
-            {
-                // No longer listing contents if we encounter a 'cd' command
-                isListingContents = false;
-
-                var path = trimmedLine.Substring(3).Trim(); // Extract the path after "cd "
-                if (path == "/")
-                {
-                    currentDirectory = root; // Change to root directory
-                    Console.WriteLine("Changed to root directory.");
-                }
-                else if (path == "..")
-                {
-                    if (currentDirectory.Parent != null)
-                    {
-                        currentDirectory = currentDirectory.Parent; // Change to parent directory
-                        Console.WriteLine($"Changed to parent directory: {currentDirectory.Name}");
-                    }
-                }
-                else
-                {
-                    Directory subDirectory = null; // Start with no subdirectory found
-                    foreach (var dir in currentDirectory.SubDirectories)
-                    {
-                        if (dir.Name == path)
-                        {
-                            subDirectory = dir; // Subdirectory found
-                            break; // Exit the loop once the directory is found
-                        }
-                    }
-                    if (subDirectory != null)
-                    {
-                        currentDirectory = subDirectory; // Change to the specified subdirectory
-                        Console.WriteLine($"Changed to subdirectory: {currentDirectory.Name}");
-                    }
-                }
-            }
-            // If it's an 'ls' command, toggle the flag to start listing contents
-            else if (trimmedLine.StartsWith("ls"))
-            {
-                isListingContents = true;
-                Console.WriteLine($"Listing contents of directory: {currentDirectory.Name}");
-            }
-            // If we are listing contents, process directory or file creation
-            else if (isListingContents)
-            {
-                if (trimmedLine.StartsWith("dir "))
-                {
-                    string dirName = trimmedLine.Substring(4).Trim(); // Extract the directory name
-                    Directory newDirectory = new Directory(dirName) { Parent = currentDirectory };
-                    currentDirectory.SubDirectories.Add(newDirectory); // Add new directory
-                    Console.WriteLine($"Created new directory: {dirName}");
-                }
-                else if (char.IsDigit(trimmedLine[0])) // Simple check to assume it's a file
-                {
-                    var parts = trimmedLine.Split(new[] { ' ' }, 2);
-                    if (parts.Length == 2 && int.TryParse(parts[0], out int fileSize))
-                    {
-                        string fileName = parts[1];
-                        File newFile = new File(fileName, fileSize);
-                        currentDirectory.Files.Add(newFile); // Add new file
-                        Console.WriteLine($"Created new file: {fileName} of size {fileSize}");
-                    }
-                }
-            }
+            ProcessLine(line, ref currentDirectory, ref isListingContents);
         }
 
+        // Return the fully parsed root directory.
         return root;
     }
 
+    // Processes a single line of input to build the filesystem.
+    static void ProcessLine(string line, ref Directory currentDirectory, ref bool isListingContents)
+    {
+        // Remove leading '$' and whitespace from the line.
+        string trimmedLine = line.TrimStart(new char[] { '$', ' ' });
 
-    // ... Directory and File classes
+        if (trimmedLine.StartsWith("cd "))
+        {
+            ProcessCdCommand(trimmedLine, ref currentDirectory);
+        }
+        else if (trimmedLine.StartsWith("ls"))
+        {
+            isListingContents = true;
+            Console.WriteLine($"Listing contents of directory: {currentDirectory.Name}");
+        }
+        // Handle the actual listing of files and directories after 'ls'.
+        else if (isListingContents)
+        {
+            ProcessLsContents(trimmedLine, currentDirectory);
+        }
+    }
+    static void ProcessCdCommand(string command, ref Directory currentDirectory)
+    {
+        // Extract the directory path from the command.
+        var path = command.Substring(3).Trim();
+
+        // If the path is "/", we're changing to the root directory.
+        if (path == "/")
+        {
+            currentDirectory = root; // Set the current directory to root.
+            Console.WriteLine("Changed to root directory."); 
+        }
+        // If the path is "..", we're moving up to the parent directory.
+        else if (path == "..")
+        {
+            // Make sure the current directory isn't already the root directory.
+            if (currentDirectory.Parent != null)
+            {
+                currentDirectory = currentDirectory.Parent; // Set the current directory to its parent.
+                Console.WriteLine($"Changed to parent directory: {currentDirectory.Name}"); // Confirm the change for the user.
+            }
+        }
+        // Otherwise, we're changing to a subdirectory within the current directory.
+        else
+        {
+            // Attempt to find the subdirectory by name.
+            Directory subDirectory = currentDirectory.SubDirectories.FirstOrDefault(d => d.Name == path);
+
+            // If found, change to that subdirectory.
+            if (subDirectory != null)
+            {
+                currentDirectory = subDirectory; // Change the current directory to the found subdirectory.
+                Console.WriteLine($"Changed to directory: {currentDirectory.Name}"); 
+            }
+            else
+            {
+                Console.WriteLine($"Directory '{path}' not found.");
+            }
+        }
+    }
+
+    // Parses the contents listed after the 'ls' command and creates new directories or files
+    static void ProcessLsContents(string contentLine, Directory currentDirectory)
+    {
+        if (contentLine.StartsWith("dir "))
+        {
+
+            string dirName = contentLine.Substring(4).Trim();
+
+            // Make a new directory object and remember who its parent is.
+            Directory newDirectory = new Directory(dirName) { Parent = currentDirectory };
+
+            // Stick this new directory in the current one.
+            currentDirectory.SubDirectories.Add(newDirectory);
 
 
+            Console.WriteLine($"Created directory: {dirName}");
+        }
+        // If the line starts with a number, it's a file with its size listed first.
+        else if (char.IsDigit(contentLine[0]))
+        {
+            // Break the line into size and name.
+            var parts = contentLine.Split(new[] { ' ' }, 2);
+
+            // Check we've got two bits: the size and the name.
+            if (parts.Length == 2 && int.TryParse(parts[0], out int fileSize))
+            {
+
+                string fileName = parts[1];
 
 
+                File newFile = new File(fileName, fileSize);
 
+
+                currentDirectory.Files.Add(newFile);
+
+
+                Console.WriteLine($"Created file: {fileName} ({fileSize} bytes)");
+            }
+        }
+    }
 }
+
