@@ -26,7 +26,7 @@ using System.Linq;
 using System.Diagnostics;
 
 
-class Day_7a_disabled
+class Day_7a
 {
 
     class Directory
